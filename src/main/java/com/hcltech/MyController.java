@@ -13,6 +13,7 @@ public class MyController {
 	@RequestMapping("/hi")
 	public String myMethod2() {
 		return "Welcome Jack";
+		
 	}
 	
 
