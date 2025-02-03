@@ -22,10 +22,4 @@ public class BankAccount {
     @Column(nullable = false, unique = true)
     private String bankAccountNumber;
 
-    private String upiId; // Optional field
-
-    private String linkedDate;
-
-    @Column(nullable = false)
-    private String accountStatus; // Active / Inactive
 }

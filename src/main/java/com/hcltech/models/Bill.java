@@ -2,6 +2,7 @@ package com.hcltech.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.*;
 
 @Entity
 @Table(name = "Bills")
@@ -23,7 +24,7 @@ public class Bill {
     private double amount;
 
     @Column(nullable = false)
-    private String dueDate; //needa change to date type
+    private LocalDateTime dueDate; //needa change to date type
 
     @Column(nullable = false, length = 10)
     private String recurring; // Yes / No //maybe can use boolean here?

@@ -21,11 +21,10 @@ public class User {
     @Column(nullable = false, length = 255)
     private String lastName;
 
+    @Column(nullable = false)
     private int totalPoints;
 
     @Column(nullable = false)
     private double accountBalance;
 
-    @Column(nullable = false, unique = true, length = 15)
-    private String phoneNumber;
 }

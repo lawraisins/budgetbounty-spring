@@ -2,6 +2,7 @@ package com.hcltech.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.*;
 
 @Entity
 @Table(name = "Redemptions")
@@ -28,10 +29,10 @@ public class Redemption {
     private Reward reward;
 
     @Column(nullable = false)
-    private String redemptionDate;
+    private LocalDateTime redemptionDate;
 
     @Column(nullable = false)
-    private String expiryDate;
+    private LocalDateTime expiryDate;
 
     @Column(nullable = false, length = 255)
     private String status; // Pending, Approved, Rejected

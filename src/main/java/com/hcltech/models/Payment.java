@@ -2,6 +2,7 @@ package com.hcltech.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.*;
 
 @Entity
 @Table(name = "Payments")
@@ -28,10 +29,11 @@ public class Payment {
     private BankAccount bankAccount;
 
     @Column(nullable = false)
-    private String paymentDateTime;
+    private LocalDateTime paymentDateTime;
 
     @Column(nullable = false)
     private double paymentAmount;
 
+    @Column(nullable = false)
     private int pointsEarned;
 }
