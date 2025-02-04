@@ -1,7 +1,7 @@
 package com.hcltech.models;
 
 import jakarta.persistence.*;
-import java.time.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Reminders")
@@ -21,12 +21,12 @@ public class Reminder {
     private Bill bill;
 
     @Column(nullable = false)
-    private LocalDateTime reminderDateTime; //also might need date type here
+    private LocalDateTime reminderDateTime; 
 
     @Column(nullable = false, length = 20)
-    private String notificationStatus; // Sent / Pending
-    
- // Default constructor
+    private String notificationStatus; // "Sent" / "Pending"
+
+    // Default constructor
     public Reminder() {}
 
     // Parameterized constructor

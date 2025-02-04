@@ -14,6 +14,11 @@ public interface ReminderRepository extends JpaRepository<Reminder, Long> {
     List<Reminder> findByUserUserId(Long userId);
 
     // Find pending reminders that are due today
-    @Query("SELECT r FROM Reminder r WHERE r.notificationStatus = 'Pending' AND DATE(r.reminderDateTime) = CURRENT_DATE")
+    @Query("SELECT r FROM Reminder r WHERE r.notificationStatus = 'Pending' " +
+           "AND r.reminderDateTime BETWEEN CURRENT_DATE AND CURRENT_DATE + 1")
     List<Reminder> findPendingRemindersDueToday();
+
+    // Find a reminder for a specific bill and user
+    @Query("SELECT r FROM Reminder r WHERE r.user.userId = :userId AND r.bill.billId = :billId")
+    Reminder findReminderForBill(Long userId, Long billId);
 }

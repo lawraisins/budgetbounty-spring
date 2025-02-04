@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReminderService {
@@ -32,7 +33,44 @@ public class ReminderService {
      * Create or update a reminder.
      */
     public Reminder saveReminder(Reminder reminder) {
-        reminder.setReminderDateTime(LocalDateTime.now());
+        Reminder existingReminder = reminderRepository.findReminderForBill(
+                reminder.getUser().getUserId(), 
+                reminder.getBill().getBillId()
+        );
+
+        if (existingReminder != null) {
+            existingReminder.setReminderDateTime(reminder.getReminderDateTime());
+            existingReminder.setNotificationStatus(reminder.getNotificationStatus());
+            return reminderRepository.save(existingReminder);
+        }
+
         return reminderRepository.save(reminder);
     }
+
+
+    /**
+     * Delete a reminder.
+     */
+    public void deleteReminder(Long reminderId) {
+        if (!reminderRepository.existsById(reminderId)) {
+            throw new IllegalArgumentException("Reminder with ID " + reminderId + " not found.");
+        }
+        reminderRepository.deleteById(reminderId);
+    }
+    
+//  /**
+//  * Mark a reminder as sent.
+//  */
+// public Reminder markReminderAsSent(Long reminderId) {
+//     Optional<Reminder> reminderOptional = reminderRepository.findById(reminderId);
+//
+//     if (reminderOptional.isPresent()) {
+//         Reminder reminder = reminderOptional.get();
+//         reminder.setNotificationStatus("Sent");
+//         return reminderRepository.save(reminder);
+//     } else {
+//         throw new IllegalArgumentException("Reminder not found.");
+//     }
+// }
+    
 }
