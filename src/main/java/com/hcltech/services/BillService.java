@@ -26,14 +26,16 @@ public class BillService {
      * Get upcoming bills (due after today).
      */
     public List<Bill> getUpcomingBills(Long userId) {
-        return billRepository.findUpcomingBills(userId, LocalDate.now());
+        LocalDate today = LocalDate.now();
+        LocalDate nextMonth = today.plusDays(30); // Set 30 days range
+        return billRepository.findUpcomingDueBills(today, nextMonth);
     }
 
     /**
      * Retrieve recurring bills.
      */
     public List<Bill> getRecurringBills(Long userId) {
-        return billRepository.findRecurringBills(userId);
+        return billRepository.findByUserUserIdAndRecurringTrue(userId);
     }
 
     /**
@@ -46,6 +48,36 @@ public class BillService {
             bill.setBillStatus("Paid");
             return billRepository.save(bill);
         }
-        return null;
+        return null; // Bill not found
+    }
+
+    /**
+     * Create a new bill.
+     */
+    public Bill createBill(Bill bill) {
+        return billRepository.save(bill);
+    }
+
+    /**
+     * Update an existing bill.
+     */
+    public Bill updateBill(Long billId, Bill updatedBill) {
+        Optional<Bill> existingBill = billRepository.findById(billId);
+        if (existingBill.isPresent()) {
+            Bill bill = existingBill.get();
+            bill.setAmount(updatedBill.getAmount());
+            bill.setDueDate(updatedBill.getDueDate());
+            bill.setRecurring(updatedBill.isRecurring());
+            bill.setBillStatus(updatedBill.getBillStatus());
+            return billRepository.save(bill);
+        }
+        return null; // Bill not found
+    }
+
+    /**
+     * Delete a bill.
+     */
+    public void deleteBill(Long billId) {
+        billRepository.deleteById(billId);
     }
 }
