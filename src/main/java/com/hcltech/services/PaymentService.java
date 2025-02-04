@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PaymentService {
@@ -52,25 +51,19 @@ public class PaymentService {
      * Make a payment and update bill status.
      */
     public Payment makePayment(Payment payment) {
-        Optional<Bill> billOptional = billService.getBillById(payment.getBill().getBillId()); // FIXED
+        Bill bill = billService.getBillById(payment.getBill().getBillId()); // Now correctly returns Bill
 
-        if (billOptional.isPresent()) {
-            Bill bill = billOptional.get();
-
-            // Ensure the bill isn't already paid before proceeding
-            if ("Paid".equals(bill.getBillStatus())) {
-                throw new IllegalStateException("This bill has already been paid.");
-            }
-
-            // Mark the bill as paid
-            billService.markBillAsPaid(bill.getBillId());
-
-            // Set payment date to now
-            payment.setPaymentDateTime(LocalDateTime.now());
-
-            return paymentRepository.save(payment);
+        // Ensure the bill isn't already paid before proceeding
+        if ("Paid".equalsIgnoreCase(bill.getBillStatus())) {
+            throw new IllegalStateException("Bill has already been paid.");
         }
-        
-        throw new IllegalArgumentException("Bill not found.");
+
+        // Mark the bill as paid
+        billService.markBillAsPaid(bill.getBillId());
+
+        // Set payment date to now
+        payment.setPaymentDateTime(LocalDateTime.now());
+
+        return paymentRepository.save(payment);
     }
 }
