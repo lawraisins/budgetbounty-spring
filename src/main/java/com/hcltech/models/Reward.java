@@ -15,9 +15,9 @@ public class Reward {
     @SequenceGenerator(name = "reward_seq", sequenceName = "reward_seq", allocationSize = 1)
     private Long rewardId;
 
-    @ManyToOne
-    @JoinColumn(name = "partnerId", nullable = false)
-    private Partner partner; //can exclude first
+//    @ManyToOne
+//    @JoinColumn(name = "partnerId", nullable = false)
+//    private Partner partner; //can exclude first
 
     @Column(nullable = false, length = 255)
     private String rewardName;

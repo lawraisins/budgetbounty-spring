@@ -26,8 +26,8 @@ public class Bill {
     @Column(nullable = false)
     private LocalDateTime dueDate; //needa change to date type
 
-    @Column(nullable = false, length = 10)
-    private String recurring; // Yes / No //maybe can use boolean here?
+    @Column(nullable = false)
+    private boolean recurring; // True/False //maybe can use boolean here?
 
     @Column(nullable = false, length = 10)
     private String billStatus; // Paid / Unpaid

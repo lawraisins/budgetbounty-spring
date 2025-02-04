@@ -20,9 +20,9 @@ public class Redemption {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "adminId", nullable = false)
-    private Admin admin; //can exclude first
+//    @ManyToOne
+//    @JoinColumn(name = "adminId", nullable = false)
+//    private Admin admin; //can exclude first
 
     @ManyToOne
     @JoinColumn(name = "rewardId", nullable = false)
