@@ -17,6 +17,9 @@ public class PaymentService {
 
     @Autowired
     private BillService billService;
+    
+    @Autowired
+    private AuthService authService; // Updated to use AuthService for points management
 
     /**
      * Get all payments for a user.
@@ -51,7 +54,11 @@ public class PaymentService {
      * Make a payment and update bill status.
      */
     public Payment makePayment(Payment payment) {
-        Bill bill = billService.getBillById(payment.getBill().getBillId()); // Now correctly returns Bill
+        Bill bill = billService.getBillById(payment.getBill().getBillId()); 
+        
+        if (bill == null) {
+            throw new IllegalArgumentException("Bill not found.");
+        } //newly added, check here if got error
 
         // Ensure the bill isn't already paid before proceeding
         if ("Paid".equalsIgnoreCase(bill.getBillStatus())) {
@@ -63,6 +70,9 @@ public class PaymentService {
 
         // Set payment date to now
         payment.setPaymentDateTime(LocalDateTime.now());
+
+        // Earn 10 points for the payment
+        authService.updateUserPoints(payment.getUser().getUserId(), 10);
 
         return paymentRepository.save(payment);
     }
