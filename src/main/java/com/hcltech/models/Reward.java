@@ -1,13 +1,11 @@
 package com.hcltech.models;
 
 import jakarta.persistence.*;
-import lombok.*;
+
 
 @Entity
 @Table(name = "Rewards")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class Reward {
 
     @Id
@@ -24,4 +22,38 @@ public class Reward {
 
     @Column(nullable = false)
     private int pointsRequired;
+    
+ // Default constructor
+    public Reward() {}
+
+    // Parameterized constructor
+    public Reward(String rewardName, int pointsRequired) {
+        this.rewardName = rewardName;
+        this.pointsRequired = pointsRequired;
+    }
+
+    // Getters and Setters
+    public Long getRewardId() {
+        return rewardId;
+    }
+
+    public void setRewardId(Long rewardId) {
+        this.rewardId = rewardId;
+    }
+
+    public String getRewardName() {
+        return rewardName;
+    }
+
+    public void setRewardName(String rewardName) {
+        this.rewardName = rewardName;
+    }
+
+    public int getPointsRequired() {
+        return pointsRequired;
+    }
+
+    public void setPointsRequired(int pointsRequired) {
+        this.pointsRequired = pointsRequired;
+    }
 }

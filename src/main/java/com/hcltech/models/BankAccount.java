@@ -1,13 +1,10 @@
 package com.hcltech.models;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
 @Table(name = "BankAccount")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class BankAccount {
 
     @Id
@@ -21,5 +18,39 @@ public class BankAccount {
 
     @Column(nullable = false, unique = true)
     private String bankAccountNumber;
+    
+ // Default constructor
+    public BankAccount() {}
+
+    // Parameterized constructor
+    public BankAccount(User user, String bankAccountNumber) {
+        this.user = user;
+        this.bankAccountNumber = bankAccountNumber;
+    }
+
+    // Getters and Setters
+    public Long getBankAccountId() {
+        return bankAccountId;
+    }
+
+    public void setBankAccountId(Long bankAccountId) {
+        this.bankAccountId = bankAccountId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getBankAccountNumber() {
+        return bankAccountNumber;
+    }
+
+    public void setBankAccountNumber(String bankAccountNumber) {
+        this.bankAccountNumber = bankAccountNumber;
+    }
 
 }

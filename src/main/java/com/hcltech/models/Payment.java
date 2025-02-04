@@ -1,14 +1,10 @@
 package com.hcltech.models;
 
 import jakarta.persistence.*;
-import lombok.*;
 import java.time.*;
 
 @Entity
 @Table(name = "Payments")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Payment {
 
     @Id
@@ -36,4 +32,77 @@ public class Payment {
 
     @Column(nullable = false)
     private int pointsEarned;
+    
+ // Default constructor
+    public Payment() {}
+
+    // Parameterized constructor
+    public Payment(User user, Bill bill, BankAccount bankAccount, LocalDateTime paymentDateTime, double paymentAmount, int pointsEarned) {
+        this.user = user;
+        this.bill = bill;
+        this.bankAccount = bankAccount;
+        this.paymentDateTime = paymentDateTime;
+        this.paymentAmount = paymentAmount;
+        this.pointsEarned = pointsEarned;
+    }
+
+    // Getters and Setters
+    public Long getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(Long paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Bill getBill() {
+        return bill;
+    }
+
+    public void setBill(Bill bill) {
+        this.bill = bill;
+    }
+
+    public BankAccount getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    public LocalDateTime getPaymentDateTime() {
+        return paymentDateTime;
+    }
+
+    public void setPaymentDateTime(LocalDateTime paymentDateTime) {
+        this.paymentDateTime = paymentDateTime;
+    }
+
+    public double getPaymentAmount() {
+        return paymentAmount;
+    }
+
+    public void setPaymentAmount(double paymentAmount) {
+        this.paymentAmount = paymentAmount;
+    }
+
+    public int getPointsEarned() {
+        return pointsEarned;
+    }
+
+    public void setPointsEarned(int pointsEarned) {
+        this.pointsEarned = pointsEarned;
+    }
+    
+    
+    
 }

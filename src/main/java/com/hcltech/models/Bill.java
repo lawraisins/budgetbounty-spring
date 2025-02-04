@@ -1,14 +1,11 @@
 package com.hcltech.models;
 
 import jakarta.persistence.*;
-import lombok.*;
 import java.time.*;
 
 @Entity
 @Table(name = "Bills")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class Bill {
 
     @Id
@@ -31,4 +28,65 @@ public class Bill {
 
     @Column(nullable = false, length = 10)
     private String billStatus; // Paid / Unpaid
+    
+ // Default constructor
+    public Bill() {}
+
+    // Parameterized constructor
+    public Bill(User user, double amount, LocalDateTime dueDate, boolean recurring, String billStatus) {
+        this.user = user;
+        this.amount = amount;
+        this.dueDate = dueDate;
+        this.recurring = recurring;
+        this.billStatus = billStatus;
+    }
+
+    // Getters and Setters
+    public Long getBillId() {
+        return billId;
+    }
+
+    public void setBillId(Long billId) {
+        this.billId = billId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public LocalDateTime getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDateTime dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public boolean isRecurring() {
+        return recurring;
+    }
+
+    public void setRecurring(boolean recurring) {
+        this.recurring = recurring;
+    }
+
+    public String getBillStatus() {
+        return billStatus;
+    }
+
+    public void setBillStatus(String billStatus) {
+        this.billStatus = billStatus;
+    }
 }
