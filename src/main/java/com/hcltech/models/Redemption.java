@@ -16,10 +16,6 @@ public class Redemption {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-//    @ManyToOne
-//    @JoinColumn(name = "adminId", nullable = false)
-//    private Admin admin; //can exclude first
-
     @ManyToOne
     @JoinColumn(name = "rewardId", nullable = false)
     private Reward reward;
@@ -32,8 +28,8 @@ public class Redemption {
 
     @Column(nullable = false, length = 255)
     private String status; // Pending, Approved, Rejected
-    
- // Default constructor
+
+    // Default constructor
     public Redemption() {}
 
     // Parameterized constructor
@@ -93,5 +89,4 @@ public class Redemption {
     public void setStatus(String status) {
         this.status = status;
     }
-    
 }
