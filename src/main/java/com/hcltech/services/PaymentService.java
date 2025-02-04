@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PaymentService {
@@ -26,18 +27,50 @@ public class PaymentService {
     }
 
     /**
-     * Get payment history (paid bills).
+     * Get payment history (only paid bills).
      */
     public List<Payment> getPaymentHistory(Long userId) {
         return paymentRepository.findPaidPaymentsForUser(userId);
     }
 
     /**
+     * Get payments made from a specific bank account.
+     */
+    public List<Payment> getPaymentsByBankAccount(Long bankAccountId) {
+        return paymentRepository.findByBankAccountBankAccountId(bankAccountId);
+    }
+
+    /**
+     * Get all payments made within the last X days.
+     */
+    public List<Payment> getPaymentsWithinLastDays(int days) {
+        LocalDateTime startDate = LocalDateTime.now().minusDays(days);
+        return paymentRepository.findPaymentsWithinLastDays(startDate);
+    }
+
+    /**
      * Make a payment and update bill status.
      */
     public Payment makePayment(Payment payment) {
-        billService.markBillAsPaid(payment.getBill().getBillId());
-        payment.setPaymentDateTime(LocalDateTime.now());
-        return paymentRepository.save(payment);
+        Optional<Bill> billOptional = billService.getBillById(payment.getBill().getBillId()); // FIXED
+
+        if (billOptional.isPresent()) {
+            Bill bill = billOptional.get();
+
+            // Ensure the bill isn't already paid before proceeding
+            if ("Paid".equals(bill.getBillStatus())) {
+                throw new IllegalStateException("This bill has already been paid.");
+            }
+
+            // Mark the bill as paid
+            billService.markBillAsPaid(bill.getBillId());
+
+            // Set payment date to now
+            payment.setPaymentDateTime(LocalDateTime.now());
+
+            return paymentRepository.save(payment);
+        }
+        
+        throw new IllegalArgumentException("Bill not found.");
     }
 }

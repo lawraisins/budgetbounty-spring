@@ -30,6 +30,13 @@ public class BillService {
         LocalDate nextMonth = today.plusDays(30); // Set 30 days range
         return billRepository.findUpcomingDueBills(today, nextMonth);
     }
+    
+    /**
+     * Get a single bill by ID.
+     */
+    public Optional<Bill> getBillById(Long billId) {
+        return billRepository.findById(billId);
+    }
 
     /**
      * Retrieve recurring bills.
