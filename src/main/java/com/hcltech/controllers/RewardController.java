@@ -9,21 +9,70 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rewards")
+@RequestMapping("/api/rewards")
 public class RewardController {
 
     @Autowired
     private RewardService rewardService;
 
-    // Get all rewards
-    @GetMapping
+    /**
+     * Retrieve all available rewards.
+     */
+    @GetMapping("/all")
     public ResponseEntity<List<Reward>> getAllRewards() {
         return ResponseEntity.ok(rewardService.getAllRewards());
     }
 
-    // Redeem a reward
+    /**
+     * Get a specific reward by ID.
+     */
+    @GetMapping("/{rewardId}")
+    public ResponseEntity<Reward> getRewardById(@PathVariable Long rewardId) {
+        try {
+            return ResponseEntity.ok(rewardService.getRewardById(rewardId));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    /**
+     * Get rewards that a user can redeem with their total points balance.
+     */
+    @GetMapping("/redeemable/{userPoints}")
+    public ResponseEntity<List<Reward>> getRedeemableRewards(@PathVariable int userPoints) {
+        return ResponseEntity.ok(rewardService.getRedeemableRewards(userPoints));
+    }
+
+    /**
+     * Redeem a reward using user points.
+     */
     @PostMapping("/redeem")
     public ResponseEntity<String> redeemReward(@RequestParam Long userId, @RequestParam Long rewardId) {
-        return ResponseEntity.ok(rewardService.redeemReward(userId, rewardId));
+        String response = rewardService.redeemReward(userId, rewardId);
+        if (response.equals("Not enough points for redemption.")) {
+            return ResponseEntity.badRequest().body(response);
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Add a new reward (Admin Functionality).
+     */
+    @PostMapping("/add")
+    public ResponseEntity<Reward> addReward(@RequestBody Reward reward) {
+        return ResponseEntity.ok(rewardService.addReward(reward));
+    }
+
+    /**
+     * Delete a reward by ID (Admin Functionality).
+     */
+    @DeleteMapping("/{rewardId}")
+    public ResponseEntity<String> deleteReward(@PathVariable Long rewardId) {
+        try {
+            rewardService.deleteReward(rewardId);
+            return ResponseEntity.ok("Reward deleted successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
