@@ -46,7 +46,7 @@ public class PaymentService {
      * Get all payments made within the last X days.
      */
     public List<Payment> getPaymentsWithinLastDays(int days) {
-        LocalDateTime startDate = LocalDateTime.now().minusDays(days);
+        LocalDateTime startDate = LocalDateTime.now().minusDays(days); // Compute start date
         return paymentRepository.findPaymentsWithinLastDays(startDate);
     }
 
