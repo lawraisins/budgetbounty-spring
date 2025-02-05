@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +17,7 @@ public class ReminderService {
     private ReminderRepository reminderRepository;
 
     /**
-     * Retrieve reminders for a user.
+     * Retrieve all reminders for a user.
      */
     public List<Reminder> getRemindersForUser(Long userId) {
         return reminderRepository.findByUserUserId(userId);
@@ -26,33 +27,31 @@ public class ReminderService {
      * Retrieve pending reminders that are due today.
      */
     public List<Reminder> getDueReminders() {
-        return reminderRepository.findPendingRemindersDueToday();
+        LocalDateTime startDate = LocalDateTime.now().with(LocalTime.MIN); // Start of today
+        LocalDateTime endDate = LocalDateTime.now().with(LocalTime.MAX);   // End of today
+        return reminderRepository.findPendingRemindersDueToday(startDate, endDate);
+    }
+
+    /**
+     * Retrieve a reminder for a specific bill and user.
+     */
+    public Reminder getReminderForBill(Long userId, Long billId) {
+        return reminderRepository.findReminderForBill(userId, billId);
     }
 
     /**
      * Create or update a reminder.
      */
     public Reminder saveReminder(Reminder reminder) {
-        Reminder existingReminder = reminderRepository.findReminderForBill(
-                reminder.getUser().getUserId(), 
-                reminder.getBill().getBillId()
-        );
-
-        if (existingReminder != null) {
-            existingReminder.setReminderDateTime(reminder.getReminderDateTime());
-            existingReminder.setNotificationStatus(reminder.getNotificationStatus());
-            return reminderRepository.save(existingReminder);
-        }
-
         return reminderRepository.save(reminder);
     }
 
-
     /**
-     * Delete a reminder.
+     * Delete a reminder by ID.
      */
     public void deleteReminder(Long reminderId) {
-        if (!reminderRepository.existsById(reminderId)) {
+        Optional<Reminder> reminder = reminderRepository.findById(reminderId);
+        if (reminder.isEmpty()) {
             throw new IllegalArgumentException("Reminder with ID " + reminderId + " not found.");
         }
         reminderRepository.deleteById(reminderId);
@@ -68,9 +67,5 @@ public class ReminderService {
 //         Reminder reminder = reminderOptional.get();
 //         reminder.setNotificationStatus("Sent");
 //         return reminderRepository.save(reminder);
-//     } else {
-//         throw new IllegalArgumentException("Reminder not found.");
-//     }
-// }
     
 }
