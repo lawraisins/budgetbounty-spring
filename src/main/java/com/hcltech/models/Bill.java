@@ -5,7 +5,6 @@ import java.time.*;
 
 @Entity
 @Table(name = "Bills")
-
 public class Bill {
 
     @Id
@@ -17,24 +16,28 @@ public class Bill {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
+    @Column(nullable = false, length = 255) // ✅ Added bill name field
+    private String billName;
+
     @Column(nullable = false)
     private double amount;
 
     @Column(nullable = false)
-    private LocalDate dueDate; //needa change to date type
+    private LocalDate dueDate;
 
     @Column(nullable = false)
-    private boolean recurring; // True/False //maybe can use boolean here?
+    private boolean recurring;
 
     @Column(nullable = false, length = 10)
-    private String billStatus = "unpaid"; // Paid / Unpaid
-    
- // Default constructor
+    private String billStatus = "Unpaid"; // Set default to Unpaid
+
+    // Default constructor
     public Bill() {}
 
-    // Parameterized constructor
-    public Bill(User user, double amount, LocalDate dueDate, boolean recurring, String billStatus) {
+    // ✅ Updated constructor to include billName
+    public Bill(User user, String billName, double amount, LocalDate dueDate, boolean recurring, String billStatus) {
         this.user = user;
+        this.billName = billName;
         this.amount = amount;
         this.dueDate = dueDate;
         this.recurring = recurring;
@@ -56,6 +59,14 @@ public class Bill {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getBillName() {
+        return billName;
+    }
+
+    public void setBillName(String billName) {
+        this.billName = billName;
     }
 
     public double getAmount() {

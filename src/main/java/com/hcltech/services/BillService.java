@@ -44,19 +44,13 @@ public class BillService {
     public List<Bill> getRecurringBills(Long userId) {
         return billRepository.findByUserUserIdAndRecurringTrue(userId);
     }
-
-    /**
-     * ✅ Retrieve unpaid bills for a user.
-     */
-    public List<Bill> getUnpaidBillsForUser(Long userId) {
-        return billRepository.findUnpaidBillsByUserId(userId);
-    }
-
+    
+    
     /**
      * Mark a bill as paid.
      */
     public Bill markBillAsPaid(Long billId) {
-        Bill bill = getBillById(billId); // Fetch bill or throw error if not found
+        Bill bill = getBillById(billId);
 
         if ("Paid".equalsIgnoreCase(bill.getBillStatus())) {
             throw new IllegalStateException("Bill with ID " + billId + " has already been paid.");
@@ -65,20 +59,24 @@ public class BillService {
         bill.setBillStatus("Paid");
         return billRepository.save(bill);
     }
-
+    
+    
     /**
      * Create a new bill.
      */
+
     public Bill createBill(Bill bill) {
         return billRepository.save(bill);
     }
 
+    
     /**
      * Update an existing bill.
      */
     public Bill updateBill(Long billId, Bill updatedBill) {
         Bill bill = getBillById(billId);
 
+        bill.setBillName(updatedBill.getBillName()); // Added bill name update
         bill.setAmount(updatedBill.getAmount());
         bill.setDueDate(updatedBill.getDueDate());
         bill.setRecurring(updatedBill.isRecurring());
@@ -95,5 +93,15 @@ public class BillService {
             throw new IllegalArgumentException("Bill with ID " + billId + " not found.");
         }
         billRepository.deleteById(billId);
+    }
+
+    // New Method: Fetch unpaid bills for user (For make-payment dropdown)
+    public List<Bill> getUnpaidBillsForUser(Long userId) {
+        return billRepository.findUnpaidBillsByUserId(userId);
+    }
+
+    // New Method: Fetch unpaid bill names only
+    public List<String> getUnpaidBillNamesForUser(Long userId) {
+        return billRepository.findUnpaidBillNamesByUserId(userId);
     }
 }
