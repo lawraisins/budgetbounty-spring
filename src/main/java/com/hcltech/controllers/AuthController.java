@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000") // Enable CORS for React frontend
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -28,8 +29,8 @@ public class AuthController {
      * User Login Authentication
      */
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
-        boolean authenticated = authService.authenticateUser(username, password);
+    public ResponseEntity<String> login(@RequestBody User user) {
+        boolean authenticated = authService.authenticateUser(user.getUsername(), user.getPassword());
         return authenticated ? ResponseEntity.ok("Login successful") :
                 ResponseEntity.badRequest().body("Invalid username or password");
     }
