@@ -15,34 +15,68 @@ public class BillController {
     @Autowired
     private BillService billService;
 
-    // Get all bills for a user
+    /**
+     * Retrieve all bills for a user.
+     */
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Bill>> getAllBillsForUser(@PathVariable Long userId) {
         return ResponseEntity.ok(billService.getAllBillsForUser(userId));
     }
 
-    // Get a single bill by ID
+    /**
+     * Retrieve a single bill by ID.
+     */
     @GetMapping("/{billId}")
     public ResponseEntity<Bill> getBillById(@PathVariable Long billId) {
         return ResponseEntity.ok(billService.getBillById(billId));
     }
 
-    // Mark a bill as paid
-    @PostMapping("/{billId}/pay")
-    public ResponseEntity<Bill> markBillAsPaid(@PathVariable Long billId) {
-        return ResponseEntity.ok(billService.markBillAsPaid(billId));
+    /**
+     * Get upcoming bills for a user (Due after today).
+     */
+    @GetMapping("/upcoming/{userId}")
+    public ResponseEntity<List<Bill>> getUpcomingBills(@PathVariable Long userId) {
+        return ResponseEntity.ok(billService.getUpcomingBills(userId));
     }
 
-    // Create a new bill
-    @PostMapping
+    /**
+     * Get recurring bills for a user.
+     */
+    @GetMapping("/recurring/{userId}")
+    public ResponseEntity<List<Bill>> getRecurringBills(@PathVariable Long userId) {
+        return ResponseEntity.ok(billService.getRecurringBills(userId));
+    }
+
+    /**
+     * Create a new bill.
+     */
+    @PostMapping("/create")
     public ResponseEntity<Bill> createBill(@RequestBody Bill bill) {
         return ResponseEntity.ok(billService.createBill(bill));
     }
 
-    // Delete a bill
-    @DeleteMapping("/{billId}")
+    /**
+     * Update an existing bill.
+     */
+    @PutMapping("/update/{billId}")
+    public ResponseEntity<Bill> updateBill(@PathVariable Long billId, @RequestBody Bill updatedBill) {
+        return ResponseEntity.ok(billService.updateBill(billId, updatedBill));
+    }
+
+    /**
+     * Delete a bill.
+     */
+    @DeleteMapping("/delete/{billId}")
     public ResponseEntity<String> deleteBill(@PathVariable Long billId) {
         billService.deleteBill(billId);
         return ResponseEntity.ok("Bill deleted successfully.");
+    }
+
+    /**
+     * Mark a bill as paid.
+     */
+    @PutMapping("/mark-paid/{billId}")
+    public ResponseEntity<Bill> markBillAsPaid(@PathVariable Long billId) {
+        return ResponseEntity.ok(billService.markBillAsPaid(billId));
     }
 }
