@@ -20,7 +20,7 @@ public class BankAccountService {
     private UserRepository userRepository;
 
     /**
-     * Retrieve all bank accounts for a user (for dropdown).
+     * Retrieve all bank accounts for a user (Dropdown selection)
      */
     public List<BankAccount> getBankAccountsForUser(Long userId) {
         return bankAccountRepository.findByUserUserId(userId);
@@ -48,5 +48,12 @@ public class BankAccountService {
         bankAccountRepository.save(newAccount);
 
         return "Bank account added successfully!";
+    }
+
+    /**
+     * Check if a bank account exists for a specific user.
+     */
+    public boolean checkBankAccountExists(Long userId, String bankAccountNumber) {
+        return bankAccountRepository.existsByUserUserIdAndBankAccountNumber(userId, bankAccountNumber);
     }
 }
