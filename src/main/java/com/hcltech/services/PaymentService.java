@@ -55,23 +55,28 @@ public class PaymentService {
      */
     public Payment makePayment(Payment payment) {
         Bill bill = billService.getBillById(payment.getBill().getBillId()); 
-        
+
         if (bill == null) {
             throw new IllegalArgumentException("Bill not found.");
-        } //newly added, check here if got error
-
-        // Ensure the bill isn't already paid before proceeding
-        if ("Paid".equalsIgnoreCase(bill.getBillStatus())) {
-            throw new IllegalStateException("Bill has already been paid.");
         }
 
-        // Mark the bill as paid
-        billService.markBillAsPaid(bill.getBillId());
+        if ("Paid".equalsIgnoreCase(bill.getBillStatus())) {
+            throw new IllegalStateException("This bill has already been paid.");
+        }
+
+        // Ensure payment amount matches bill amount
+        if (payment.getPaymentAmount() != bill.getAmount()) {
+            throw new IllegalArgumentException("Payment amount does not match bill amount.");
+        }
+
+        // Mark bill as paid
+        bill.setBillStatus("Paid");
+        billService.createBill(bill);  // Save updated bill
 
         // Set payment date to now
         payment.setPaymentDateTime(LocalDateTime.now());
 
-        // Earn 10 points for the payment
+        // Credit user with 10 points
         authService.updateUserPoints(payment.getUser().getUserId(), 10);
 
         return paymentRepository.save(payment);

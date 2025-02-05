@@ -48,6 +48,14 @@ public class BillController {
     }
 
     /**
+     * Retrieve unpaid bills for a user.
+     */
+    @GetMapping("/unpaid/{userId}")
+    public ResponseEntity<List<Bill>> getUnpaidBillsForUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(billService.getUnpaidBillsForUser(userId));
+    }
+
+    /**
      * Create a new bill.
      */
     @PostMapping("/create")

@@ -21,19 +21,19 @@ public class Bill {
     private double amount;
 
     @Column(nullable = false)
-    private LocalDateTime dueDate; //needa change to date type
+    private LocalDate dueDate; //needa change to date type
 
     @Column(nullable = false)
     private boolean recurring; // True/False //maybe can use boolean here?
 
     @Column(nullable = false, length = 10)
-    private String billStatus; // Paid / Unpaid
+    private String billStatus = "unpaid"; // Paid / Unpaid
     
  // Default constructor
     public Bill() {}
 
     // Parameterized constructor
-    public Bill(User user, double amount, LocalDateTime dueDate, boolean recurring, String billStatus) {
+    public Bill(User user, double amount, LocalDate dueDate, boolean recurring, String billStatus) {
         this.user = user;
         this.amount = amount;
         this.dueDate = dueDate;
@@ -66,11 +66,11 @@ public class Bill {
         this.amount = amount;
     }
 
-    public LocalDateTime getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDateTime dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 

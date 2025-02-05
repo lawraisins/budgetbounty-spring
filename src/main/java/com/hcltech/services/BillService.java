@@ -46,6 +46,13 @@ public class BillService {
     }
 
     /**
+     * ✅ Retrieve unpaid bills for a user.
+     */
+    public List<Bill> getUnpaidBillsForUser(Long userId) {
+        return billRepository.findUnpaidBillsByUserId(userId);
+    }
+
+    /**
      * Mark a bill as paid.
      */
     public Bill markBillAsPaid(Long billId) {
