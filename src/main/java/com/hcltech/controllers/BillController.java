@@ -20,7 +20,7 @@ public class BillController {
      * Retrieve all bills for a user.
      */
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Bill>> getAllBillsForUser(@PathVariable Long userId) {
+    public ResponseEntity<List<Bill>> getAllBillsForUser(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(billService.getAllBillsForUser(userId));
     }
 
@@ -28,7 +28,7 @@ public class BillController {
      * Retrieve a single bill by ID.
      */
     @GetMapping("/{billId}")
-    public ResponseEntity<Bill> getBillById(@PathVariable Long billId) {
+    public ResponseEntity<Bill> getBillById(@PathVariable("billId") Long billId) {
         return ResponseEntity.ok(billService.getBillById(billId));
     }
 
@@ -44,7 +44,7 @@ public class BillController {
      * Get recurring bills for a user.
      */
     @GetMapping("/recurring/{userId}")
-    public ResponseEntity<List<Bill>> getRecurringBills(@PathVariable Long userId) {
+    public ResponseEntity<List<Bill>> getRecurringBills(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(billService.getRecurringBills(userId));
     }
 
@@ -52,7 +52,7 @@ public class BillController {
      * Retrieve unpaid bills for a user.
      */
     @GetMapping("/unpaid/{userId}")
-    public ResponseEntity<List<Bill>> getUnpaidBillsForUser(@PathVariable Long userId) {
+    public ResponseEntity<List<Bill>> getUnpaidBillsForUser(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(billService.getUnpaidBillsForUser(userId));
     }
 
@@ -68,7 +68,7 @@ public class BillController {
      * Update an existing bill.
      */
     @PutMapping("/update/{billId}")
-    public ResponseEntity<Bill> updateBill(@PathVariable Long billId, @RequestBody Bill updatedBill) {
+    public ResponseEntity<Bill> updateBill(@PathVariable("billId") Long billId, @RequestBody Bill updatedBill) {
         return ResponseEntity.ok(billService.updateBill(billId, updatedBill));
     }
 
@@ -76,7 +76,7 @@ public class BillController {
      * Delete a bill.
      */
     @DeleteMapping("/delete/{billId}")
-    public ResponseEntity<String> deleteBill(@PathVariable Long billId) {
+    public ResponseEntity<String> deleteBill(@PathVariable("billId") Long billId) {
         billService.deleteBill(billId);
         return ResponseEntity.ok("Bill deleted successfully.");
     }
