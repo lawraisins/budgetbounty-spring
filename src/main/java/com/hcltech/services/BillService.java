@@ -22,12 +22,12 @@ public class BillService {
     }
 
     /**
-     * Fetch unpaid bills that are due within the next 10 days.
+     * Fetch unpaid bills that are due within the next 10 days for a specific user.
      */
-    public List<Bill> getUnpaidBillsDueWithin10Days() {
+    public List<Bill> getUnpaidBillsDueWithin10Days(Long userId) {
         LocalDate today = LocalDate.now();
         LocalDate futureDate = today.plusDays(10); // Hardcoded 10 days
-        return billRepository.findUnpaidBillsDueWithinDays(today, futureDate);
+        return billRepository.findUnpaidBillsDueWithinDaysForUser(userId, today, futureDate);
     }
 
 
