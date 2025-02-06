@@ -39,7 +39,7 @@ public class AuthController {
      * Get User Details by ID
      */
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUser(@PathVariable Long userId) {
+    public ResponseEntity<User> getUser(@PathVariable("userId") Long userId) {
         Optional<User> user = authService.getUserById(userId);
         return user.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
