@@ -35,7 +35,7 @@ public class BillController {
      * Retrieve unpaid bills that are due within the next 10 days for a specific user.
      */
     @GetMapping("/unpaid-due-10days/{userId}")
-    public ResponseEntity<List<Bill>> getUnpaidBillsDueWithin10Days(@PathVariable Long userId) {
+    public ResponseEntity<List<Bill>> getUnpaidBillsDueWithin10Days(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(billService.getUnpaidBillsDueWithin10Days(userId));
     }
 
