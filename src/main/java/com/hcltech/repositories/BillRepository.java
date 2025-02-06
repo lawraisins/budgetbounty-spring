@@ -17,9 +17,9 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     // Find unpaid bills
     List<Bill> findByBillStatus(String status);
 
-    // Find upcoming due bills (unpaid) within the next X days
-    @Query("SELECT b FROM Bill b WHERE b.billStatus = 'Unpaid' AND b.dueDate BETWEEN :startDate AND :endDate")
-    List<Bill> findUpcomingDueBills(LocalDate startDate, LocalDate endDate);
+ // Fetch unpaid bills that are due within the next X days
+    @Query("SELECT b FROM Bill b WHERE b.billStatus = 'Unpaid' AND b.dueDate BETWEEN :today AND :futureDate")
+    List<Bill> findUnpaidBillsDueWithinDays(@Param("today") LocalDate today, @Param("futureDate") LocalDate futureDate);
 
     // Find recurring bills for a user
     List<Bill> findByUserUserIdAndRecurringTrue(Long userId);
