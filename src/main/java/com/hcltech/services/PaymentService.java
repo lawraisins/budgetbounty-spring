@@ -6,7 +6,7 @@ import com.hcltech.repositories.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -46,7 +46,7 @@ public class PaymentService {
      * Get all payments made within the last X days.
      */
     public List<Payment> getPaymentsWithinLastDays(int days) {
-        LocalDateTime startDate = LocalDateTime.now().minusDays(days); // Compute start date
+        LocalDate startDate = LocalDate.now().minusDays(days); // Updated to use LocalDate
         return paymentRepository.findPaymentsWithinLastDays(startDate);
     }
 
@@ -74,7 +74,7 @@ public class PaymentService {
         billService.createBill(bill);  // Save updated bill
 
         // Set payment date to now
-        payment.setPaymentDateTime(LocalDateTime.now());
+        payment.setPaymentDate(LocalDate.now());
 
         // Credit user with 10 points
         authService.updateUserPoints(payment.getUser().getUserId(), 10);

@@ -25,7 +25,7 @@ public class Payment {
     private BankAccount bankAccount;
 
     @Column(nullable = false)
-    private LocalDateTime paymentDateTime;
+    private LocalDate paymentDate; // Changed from LocalDateTime to LocalDate
 
     @Column(nullable = false)
     private double paymentAmount;
@@ -37,11 +37,11 @@ public class Payment {
     public Payment() {}
 
     // Parameterized constructor
-    public Payment(User user, Bill bill, BankAccount bankAccount, LocalDateTime paymentDateTime, double paymentAmount, int pointsEarned) {
+    public Payment(User user, Bill bill, BankAccount bankAccount, LocalDate paymentDate, double paymentAmount, int pointsEarned) {
         this.user = user;
         this.bill = bill;
         this.bankAccount = bankAccount;
-        this.paymentDateTime = paymentDateTime;
+        this.paymentDate = paymentDate;
         this.paymentAmount = paymentAmount;
         this.pointsEarned = pointsEarned;
     }
@@ -79,12 +79,12 @@ public class Payment {
         this.bankAccount = bankAccount;
     }
 
-    public LocalDateTime getPaymentDateTime() {
-        return paymentDateTime;
+    public LocalDate getPaymentDate() { // Updated getter
+        return paymentDate;
     }
 
-    public void setPaymentDateTime(LocalDateTime paymentDateTime) {
-        this.paymentDateTime = paymentDateTime;
+    public void setPaymentDate(LocalDate paymentDate) { // Updated setter
+        this.paymentDate = paymentDate;
     }
 
     public double getPaymentAmount() {
