@@ -24,5 +24,5 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
     // Find all paid payments for a specific user
     @Query("SELECT p FROM Payment p WHERE p.user.userId = :userId AND p.bill.billStatus = 'Paid'")
-    List<Payment> findPaidPaymentsForUser(Long userId);
+    List<Payment> findPaidPaymentsForUser(@Param("userId") Long userId);
 }

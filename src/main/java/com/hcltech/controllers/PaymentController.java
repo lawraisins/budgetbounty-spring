@@ -20,7 +20,7 @@ public class PaymentController {
      * Retrieve all payments for a user.
      */
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Payment>> getPaymentsForUser(@PathVariable Long userId) {
+    public ResponseEntity<List<Payment>> getPaymentsForUser(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(paymentService.getPaymentsForUser(userId));
     }
 
@@ -28,7 +28,7 @@ public class PaymentController {
      * Get payment history (only paid bills).
      */
     @GetMapping("/history/{userId}")
-    public ResponseEntity<List<Payment>> getPaymentHistory(@PathVariable Long userId) {
+    public ResponseEntity<List<Payment>> getPaymentHistory(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(paymentService.getPaymentHistory(userId));
     }
 
@@ -36,7 +36,7 @@ public class PaymentController {
      * Get payments made from a specific bank account.
      */
     @GetMapping("/bank-account/{bankAccountId}")
-    public ResponseEntity<List<Payment>> getPaymentsByBankAccount(@PathVariable Long bankAccountId) {
+    public ResponseEntity<List<Payment>> getPaymentsByBankAccount(@PathVariable("bankAccountId") Long bankAccountId) {
         return ResponseEntity.ok(paymentService.getPaymentsByBankAccount(bankAccountId));
     }
 
@@ -44,7 +44,7 @@ public class PaymentController {
      * Get all payments made within the last X days.
      */
     @GetMapping("/recent/{days}")
-    public ResponseEntity<List<Payment>> getPaymentsWithinLastDays(@PathVariable int days) {
+    public ResponseEntity<List<Payment>> getPaymentsWithinLastDays(@PathVariable("days") int days) {
         return ResponseEntity.ok(paymentService.getPaymentsWithinLastDays(days));
     }
 
