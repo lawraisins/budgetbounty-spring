@@ -29,11 +29,20 @@ public class AuthController {
      * User Login Authentication
      */
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
-        boolean authenticated = authService.authenticateUser(user.getUsername(), user.getPassword());
-        return authenticated ? ResponseEntity.ok("Login successful") :
-                ResponseEntity.badRequest().body("Invalid username or password");
+    public ResponseEntity<?> login(@RequestBody User user) {
+        // Authenticate the user
+        Optional<User> authenticatedUser = authService.authenticateUser(user.getUsername(), user.getPassword());
+        
+        if (authenticatedUser.isPresent()) {
+            // If authentication is successful, return the userId
+            Long userId = authenticatedUser.get().getUserId();
+            return ResponseEntity.ok(userId);
+        } else {
+            // If authentication fails, return a bad request response
+            return ResponseEntity.badRequest().body("Invalid username or password");
+        }
     }
+
 
     /**
      * Get User Details by ID

@@ -38,9 +38,12 @@ public class AuthService {
     /**
      * Authenticate user login by checking username and password.
      */
-    public boolean authenticateUser(String username, String password) {
+    public Optional<User> authenticateUser(String username, String password) {
         Optional<User> user = userRepository.findByUsername(username);
-        return user.isPresent() && user.get().getPassword().equals(password);
+        if (user.isPresent() && user.get().getPassword().equals(password)) {
+            return user;
+        }
+        return Optional.empty();
     }
 
     /**
