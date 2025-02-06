@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/rewards")
+@RequestMapping("/rewards")
 public class RewardController {
 
     @Autowired
@@ -27,7 +27,7 @@ public class RewardController {
      * Get a specific reward by ID.
      */
     @GetMapping("/{rewardId}")
-    public ResponseEntity<Reward> getRewardById(@PathVariable Long rewardId) {
+    public ResponseEntity<Reward> getRewardById(@PathVariable("rewardId") Long rewardId) {
         try {
             return ResponseEntity.ok(rewardService.getRewardById(rewardId));
         } catch (IllegalArgumentException e) {
@@ -35,11 +35,12 @@ public class RewardController {
         }
     }
 
+
     /**
      * Get rewards that a user can redeem with their total points balance.
      */
     @GetMapping("/redeemable/{userPoints}")
-    public ResponseEntity<List<Reward>> getRedeemableRewards(@PathVariable int userPoints) {
+    public ResponseEntity<List<Reward>> getRedeemableRewards(@PathVariable("userPoints") int userPoints) {
         return ResponseEntity.ok(rewardService.getRedeemableRewards(userPoints));
     }
 
@@ -47,13 +48,14 @@ public class RewardController {
      * Redeem a reward using user points.
      */
     @PostMapping("/redeem")
-    public ResponseEntity<String> redeemReward(@RequestParam Long userId, @RequestParam Long rewardId) {
+    public ResponseEntity<String> redeemReward(@RequestParam("userId") Long userId, @RequestParam("rewardId") Long rewardId) {
         String response = rewardService.redeemReward(userId, rewardId);
         if (response.equals("Not enough points for redemption.")) {
             return ResponseEntity.badRequest().body(response);
         }
         return ResponseEntity.ok(response);
     }
+
 
     /**
      * Add a new reward (Admin Functionality).
@@ -67,7 +69,7 @@ public class RewardController {
      * Delete a reward by ID (Admin Functionality).
      */
     @DeleteMapping("/{rewardId}")
-    public ResponseEntity<String> deleteReward(@PathVariable Long rewardId) {
+    public ResponseEntity<String> deleteReward(@PathVariable("rewardId") Long rewardId) {
         try {
             rewardService.deleteReward(rewardId);
             return ResponseEntity.ok("Reward deleted successfully.");
