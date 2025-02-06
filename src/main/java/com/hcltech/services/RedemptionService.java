@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,7 +65,7 @@ public class RedemptionService {
         userRepository.save(user);
 
         // Create redemption record
-        Redemption redemption = new Redemption(user, reward, LocalDateTime.now(), LocalDateTime.now().plusMonths(1), "Pending");
+        Redemption redemption = new Redemption(user, reward, LocalDate.now(), LocalDate.now().plusMonths(1), "Approved");
         return redemptionRepository.save(redemption);
     }
 }

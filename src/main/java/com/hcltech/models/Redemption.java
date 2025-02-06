@@ -21,10 +21,10 @@ public class Redemption {
     private Reward reward;
 
     @Column(nullable = false)
-    private LocalDateTime redemptionDate;
+    private LocalDate redemptionDate; // Changed from LocalDateTime to LocalDate
 
     @Column(nullable = false)
-    private LocalDateTime expiryDate;
+    private LocalDate expiryDate; // Changed from LocalDateTime to LocalDate
 
     @Column(nullable = false, length = 255)
     private String status; // Pending, Approved, Rejected
@@ -33,7 +33,7 @@ public class Redemption {
     public Redemption() {}
 
     // Parameterized constructor
-    public Redemption(User user, Reward reward, LocalDateTime redemptionDate, LocalDateTime expiryDate, String status) {
+    public Redemption(User user, Reward reward, LocalDate redemptionDate, LocalDate expiryDate, String status) {
         this.user = user;
         this.reward = reward;
         this.redemptionDate = redemptionDate;
@@ -66,19 +66,19 @@ public class Redemption {
         this.reward = reward;
     }
 
-    public LocalDateTime getRedemptionDate() {
+    public LocalDate getRedemptionDate() { // Updated getter
         return redemptionDate;
     }
 
-    public void setRedemptionDate(LocalDateTime redemptionDate) {
+    public void setRedemptionDate(LocalDate redemptionDate) { // Updated setter
         this.redemptionDate = redemptionDate;
     }
 
-    public LocalDateTime getExpiryDate() {
+    public LocalDate getExpiryDate() { // Updated getter
         return expiryDate;
     }
 
-    public void setExpiryDate(LocalDateTime expiryDate) {
+    public void setExpiryDate(LocalDate expiryDate) { // Updated setter
         this.expiryDate = expiryDate;
     }
 
