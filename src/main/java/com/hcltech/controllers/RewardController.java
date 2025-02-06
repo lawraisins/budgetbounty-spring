@@ -47,14 +47,14 @@ public class RewardController {
     /**
      * Redeem a reward using user points.
      */
-    @PostMapping("/redeem")
-    public ResponseEntity<String> redeemReward(@RequestParam("userId") Long userId, @RequestParam("rewardId") Long rewardId) {
-        String response = rewardService.redeemReward(userId, rewardId);
-        if (response.equals("Not enough points for redemption.")) {
-            return ResponseEntity.badRequest().body(response);
-        }
-        return ResponseEntity.ok(response);
-    }
+//    @PostMapping("/redeem")
+//    public ResponseEntity<String> redeemReward(@RequestParam("userId") Long userId, @RequestParam("rewardId") Long rewardId) {
+//        String response = rewardService.redeemReward(userId, rewardId);
+//        if (response.equals("Not enough points for redemption.")) {
+//            return ResponseEntity.badRequest().body(response);
+//        }
+//        return ResponseEntity.ok(response);
+//    }
 
 
     /**

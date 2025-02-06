@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/redemptions")
+@RequestMapping("/redemptions")
 public class RedemptionController {
 
     @Autowired
@@ -19,7 +19,7 @@ public class RedemptionController {
      * Retrieve all redemptions for a specific user.
      */
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Redemption>> getRedemptionsForUser(@PathVariable Long userId) {
+    public ResponseEntity<List<Redemption>> getRedemptionsForUser(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(redemptionService.getRedemptionsForUser(userId));
     }
 
@@ -35,7 +35,7 @@ public class RedemptionController {
      * Redeem a reward using user points.
      */
     @PostMapping("/redeem")
-    public ResponseEntity<?> redeemReward(@RequestParam Long userId, @RequestParam Long rewardId) {
+    public ResponseEntity<?> redeemReward(@RequestParam("userId") Long userId, @RequestParam("rewardId") Long rewardId) {
         try {
             Redemption redemption = redemptionService.redeemReward(userId, rewardId);
             return ResponseEntity.ok(redemption);
