@@ -20,7 +20,7 @@ public class BankAccountController {
      * Get all bank accounts for a user (Dropdown selection)
      */
     @GetMapping("/{userId}")
-    public ResponseEntity<List<BankAccount>> getBankAccountsForUser(@PathVariable Long userId) {
+    public ResponseEntity<List<BankAccount>> getBankAccountsForUser(@PathVariable("userId") Long userId) {
         List<BankAccount> accounts = bankAccountService.getBankAccountsForUser(userId);
         return ResponseEntity.ok(accounts);
     }
@@ -29,7 +29,7 @@ public class BankAccountController {
      * Add a new bank account (from Add Payments form)
      */
     @PostMapping("/add")
-    public ResponseEntity<String> addBankAccount(@RequestParam Long userId, @RequestParam String bankAccountNumber) {
+    public ResponseEntity<String> addBankAccount(@RequestParam("userId") Long userId, @RequestParam("bankAccountNumber") String bankAccountNumber) {
         String response = bankAccountService.addBankAccount(userId, bankAccountNumber);
         return ResponseEntity.ok(response);
     }
@@ -38,7 +38,7 @@ public class BankAccountController {
      * Check if a user already has a specific bank account
      */
     @GetMapping("/exists")
-    public ResponseEntity<Boolean> checkBankAccountExists(@RequestParam Long userId, @RequestParam String bankAccountNumber) {
+    public ResponseEntity<Boolean> checkBankAccountExists(@RequestParam("userId") Long userId, @RequestParam("bankAccountNumber") String bankAccountNumber) {
         boolean exists = bankAccountService.checkBankAccountExists(userId, bankAccountNumber);
         return ResponseEntity.ok(exists);
     }
