@@ -1,8 +1,16 @@
 package com.hcltech.services;
 
+import com.hcltech.models.BankAccount;
 import com.hcltech.models.Bill;
 import com.hcltech.models.Payment;
+import com.hcltech.models.User;
+import com.hcltech.repositories.BankAccountRepository;
+import com.hcltech.repositories.BillRepository;
 import com.hcltech.repositories.PaymentRepository;
+import com.hcltech.repositories.UserRepository;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +22,15 @@ public class PaymentService {
 
     @Autowired
     private PaymentRepository paymentRepository;
+    
+    @Autowired
+    private BillRepository billRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
+    
+    @Autowired
+    private BankAccountRepository bankAccountRepository;
 
     @Autowired
     private BillService billService;
@@ -80,5 +97,38 @@ public class PaymentService {
         authService.updateUserPoints(payment.getUser().getUserId(), 10);
 
         return paymentRepository.save(payment);
+    }
+    
+    @Transactional
+    public void processPayment(Long userId, Long billId, String bankAccountNumber) {
+        // Fetch bill
+        Bill bill = billRepository.findById(billId)
+                .orElseThrow(() -> new IllegalArgumentException("Bill not found"));
+
+        // Fetch user
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        // Fetch bank account using the bank account number
+        BankAccount bankAccount = bankAccountRepository.findByBankAccountNumberAndUserUserId(bankAccountNumber, userId)
+                .orElseThrow(() -> new IllegalArgumentException("Bank account not found"));
+
+        // Mark bill as paid
+        bill.setBillStatus("Paid");
+        billRepository.save(bill);
+
+        // Credit 10 reward points
+        user.setTotalPoints(user.getTotalPoints() + 10);
+        userRepository.save(user);
+
+        // Save payment
+        Payment payment = new Payment();
+        payment.setUser(user);
+        payment.setBill(bill);
+        payment.setBankAccount(bankAccount);
+        payment.setPaymentDate(LocalDate.now());
+        payment.setPaymentAmount(bill.getAmount());
+        payment.setPointsEarned(10);
+        paymentRepository.save(payment);
     }
 }

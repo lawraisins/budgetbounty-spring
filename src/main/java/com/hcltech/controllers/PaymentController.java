@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000") // Enable CORS for React frontend
@@ -51,8 +52,32 @@ public class PaymentController {
     /**
      * Make a payment and update bill status.
      */
+//    @PostMapping("/make-payment")
+//    public ResponseEntity<Payment> makePayment(@RequestBody Payment payment) {
+//        return ResponseEntity.ok(paymentService.makePayment(payment));
+//    }
+//    
     @PostMapping("/make-payment")
-    public ResponseEntity<Payment> makePayment(@RequestBody Payment payment) {
-        return ResponseEntity.ok(paymentService.makePayment(payment));
+    public ResponseEntity<String> makePayment(@RequestBody Map<String, Object> paymentData) {
+        try {
+            // Convert userId to Long correctly
+            Long userId = Long.parseLong(paymentData.get("userId").toString());
+
+            // Convert billId to Long correctly
+            Map<String, Object> billMap = (Map<String, Object>) paymentData.get("bill");
+            Long billId = Long.parseLong(billMap.get("billId").toString());
+
+            // Convert bankAccountNumber to String correctly
+            Map<String, Object> bankAccountMap = (Map<String, Object>) paymentData.get("bankAccount");
+            String bankAccountNumber = bankAccountMap.get("bankAccountNumber").toString();
+
+            // Call service method
+            paymentService.processPayment(userId, billId, bankAccountNumber);
+            
+            return ResponseEntity.ok("Payment successful! 10 reward points credited.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Payment failed: " + e.getMessage());
+        }
     }
+
 }
