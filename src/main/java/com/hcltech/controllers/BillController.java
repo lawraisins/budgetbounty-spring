@@ -1,12 +1,15 @@
 package com.hcltech.controllers;
 
 import com.hcltech.models.Bill;
+import com.hcltech.models.User;
+import com.hcltech.services.AuthService;
 import com.hcltech.services.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000") // Enable CORS for React frontend
@@ -15,6 +18,9 @@ public class BillController {
 
     @Autowired
     private BillService billService;
+    
+    @Autowired
+    private AuthService authService;
 
     /**
      * Retrieve all bills for a user.
@@ -56,13 +62,13 @@ public class BillController {
         return ResponseEntity.ok(billService.getUnpaidBillsForUser(userId));
     }
 
-    /**
-     * Create a new bill.
-     */
-    @PostMapping("/create")
-    public ResponseEntity<Bill> createBill(@RequestBody Bill bill) {
-        return ResponseEntity.ok(billService.createBill(bill));
-    }
+//    /**
+//     * Create a new bill. (pre-admin method ignore for now)
+//     */
+//    @PostMapping("/create")
+//    public ResponseEntity<Bill> createBill(@RequestBody Bill bill) {
+//        return ResponseEntity.ok(billService.createBill(bill));
+//    }
 
     /**
      * Update an existing bill.
@@ -87,5 +93,50 @@ public class BillController {
     @PutMapping("/mark-paid/{billId}")
     public ResponseEntity<Bill> markBillAsPaid(@PathVariable Long billId) {
         return ResponseEntity.ok(billService.markBillAsPaid(billId));
+    }
+    
+    /**
+     * Retrieve all bills (admin access).
+     */
+    @GetMapping("/all")
+    public ResponseEntity<List<Bill>> getAllBills() {
+        return ResponseEntity.ok(billService.getAllBills());
+    }
+
+    /**
+     * Get all users for dropdown selection in Add Bill Form (admin access).
+     */
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(authService.getAllUsers());
+    }
+
+    /**
+     * Create a new bill and assign it to a user.
+     */
+//    @PostMapping("/create")
+//    public ResponseEntity<?> createBill(@RequestBody Bill bill, @RequestParam Long userId) {
+//        Optional<User> userOpt = authService.getUserById(userId);
+//        if (userOpt.isEmpty()) {
+//            return ResponseEntity.badRequest().body("User not found.");
+//        }
+//
+//        bill.setUser(userOpt.get());
+//        Bill savedBill = billService.createBill(bill);
+//        return ResponseEntity.ok(savedBill);
+//    }
+
+    
+    //version2 (working)
+    @PostMapping("/create")
+    public ResponseEntity<?> createBill(@RequestBody Bill billRequest) {
+        Optional<User> userOpt = authService.getUserById(billRequest.getUser().getUserId());
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body("User not found.");
+        }
+
+        billRequest.setUser(userOpt.get());
+        Bill savedBill = billService.createBill(billRequest);
+        return ResponseEntity.ok(savedBill);
     }
 }

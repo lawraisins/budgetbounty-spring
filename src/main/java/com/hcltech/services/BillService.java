@@ -105,4 +105,13 @@ public class BillService {
     public List<String> getUnpaidBillNamesForUser(Long userId) {
         return billRepository.findUnpaidBillNamesByUserId(userId);
     }
+    
+    
+    /**
+     * Retrieve all bills (Admin Functionality).
+     */
+    public List<Bill> getAllBills() {
+        return billRepository.findAll();
+    }
+
 }
