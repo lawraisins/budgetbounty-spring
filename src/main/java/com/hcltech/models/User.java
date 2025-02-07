@@ -27,19 +27,19 @@ public class User {
     private int totalPoints;
 
     @Column(nullable = false)
-    private double accountBalance;
+    private boolean isAdmin; // Changed from accountBalance to isAdmin
     
  // Default constructor
     public User() {}
 
-    // Parameterized constructor (including username and password)
-    public User(String username, String password, String firstName, String lastName, int totalPoints, double accountBalance) {
+ // Updated Constructor
+    public User(String username, String password, String firstName, String lastName, int totalPoints, boolean isAdmin) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.totalPoints = totalPoints;
-        this.accountBalance = accountBalance;
+        this.isAdmin = isAdmin;
     }
 
     // Getters and Setters
@@ -91,12 +91,12 @@ public class User {
         this.totalPoints = totalPoints;
     }
 
-    public double getAccountBalance() {
-        return accountBalance;
+    public boolean isAdmin() {
+        return isAdmin;
     }
 
-    public void setAccountBalance(double accountBalance) {
-        this.accountBalance = accountBalance;
+    public void setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
 }

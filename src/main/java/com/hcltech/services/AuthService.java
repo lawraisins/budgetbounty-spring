@@ -68,4 +68,9 @@ public class AuthService {
         Optional<User> userOpt = userRepository.findById(userId);
         return userOpt.isPresent() && userOpt.get().getTotalPoints() >= requiredPoints;
     }
+    
+    // New method to check if a user is an admin
+    public boolean isUserAdmin(Long userId) {
+        return userRepository.isUserAdmin(userId);
+    }
 }

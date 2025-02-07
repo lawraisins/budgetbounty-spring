@@ -76,4 +76,11 @@ public class AuthController {
         boolean hasEnough = authService.hasEnoughPoints(userId, requiredPoints);
         return ResponseEntity.ok(hasEnough);
     }
+    
+ // API to check if a user is an admin
+    @GetMapping("/{userId}/is-admin")
+    public ResponseEntity<Boolean> checkIfUserIsAdmin(@PathVariable Long userId) {
+        boolean isAdmin = authService.isUserAdmin(userId);
+        return ResponseEntity.ok(isAdmin);
+    }
 }

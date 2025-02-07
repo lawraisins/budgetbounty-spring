@@ -23,4 +23,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE User u SET u.totalPoints = :points WHERE u.userId = :userId")
     void updateUserPoints(Long userId, int points);
+    
+    
+    // Check if user is an admin
+    @Query("SELECT u.isAdmin FROM User u WHERE u.userId = :userId")
+    boolean isUserAdmin(Long userId);
 }
