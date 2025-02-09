@@ -4,6 +4,7 @@ import com.hcltech.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,5 +28,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     
     // Check if user is an admin
     @Query("SELECT u.isAdmin FROM User u WHERE u.userId = :userId")
-    boolean isUserAdmin(Long userId);
+    boolean isUserAdmin(@Param("userId") Long userId);
 }
