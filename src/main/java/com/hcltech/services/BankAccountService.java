@@ -36,10 +36,10 @@ public class BankAccountService {
             return "User not found!";
         }
 
-        // Check if the bank account already exists for this user
-        if (bankAccountRepository.existsByUserUserIdAndBankAccountNumber(userId, bankAccountNumber)) {
-            return "Bank account already exists!";
-        }
+//        // Check if the bank account already exists for this user
+//        if (bankAccountRepository.existsByUserUserIdAndBankAccountNumber(userId, bankAccountNumber)) {
+//            return "Bank account already exists!";
+//        }
 
         // Create new bank account and save
         BankAccount newAccount = new BankAccount();
