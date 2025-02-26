@@ -13,8 +13,10 @@ A Spring Boot application that allows users to manage bills and make timely paym
 ## Installation
 
 ### 1. Clone the repository:
+```bash
 git clone https://github.com/lawraisins/budgetbounty-spring.git
 cd budgetbounty-spring
+```
 
 ### 2. Configure database details in application.properties
 spring.datasource.url=jdbc:oracle:thin:@//localhost:1521/ORCLCDB
@@ -22,7 +24,9 @@ spring.datasource.username=system
 spring.datasource.password=mypassword1
 
 ### 3. Build and run project
+```bash
 mvn clean install
 mvn spring-boot:run
+```
 
 
